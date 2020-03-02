@@ -98,19 +98,25 @@ const ImisToken = (props) =>
     const getQuery = () => {
 
         try {
-            fetch('https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196',
-                {
-                    method: 'GET',
-                    headers:
-                    {
-                        'Authorization': "Bearer ".concat(props.appProps.accTokenStuff.accToken.access_token),
-                    }
-                })
-                .then(response => response.json)
-                .then(data => console.log("woooow, fetch data query logged: ", data))
-                .catch(err => {
-                    console.log('err in imiscollectionqueries ', err);
-                });
+            console.log("Logging Bearer " + props.appProps.accTokenStuff.accToken.access_token);
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader("Authorization", "Bearer " + props.appProps.accTokenStuff.accToken.access_token);
+            xhttp.send();
+            //fetch('https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196',
+            //    {
+            //        method: 'GET',
+            //        headers:
+            //        {
+            //            'Authorization': "Bearer ".concat(props.appProps.accTokenStuff.accToken.access_token),
+            //        }
+            //    })
+            //    .then(response => response.json)
+            //    .then(data => console.log("woooow, fetch data query logged: ", data))
+            //    .catch(err => {
+            //        console.log('err in imiscollectionqueries ', err);
+            //    });
         }
         catch (Err) {
             console.log(Err.message);
