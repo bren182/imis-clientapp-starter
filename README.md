@@ -14,8 +14,8 @@
     
  #### To Do:
  
- [ ] Complete `GET` request with the received `access_token`.
- [ ] Refactor messy code / remove commented code.
- [ ] Maybe open up a trello board instead of editing these to-do's here.
+ [] Complete `GET` request with the received `access_token`.
+ [] Refactor messy code / remove commented code.
+ [] Maybe open up a trello board instead of editing these to-do's here.
 
 
