@@ -39,19 +39,6 @@ const ImisToken = (props) =>
     }, [data])
 
 
-
-    //useEffect(() =>
-    //{
-    //    console.log('show success: ', isSuccess);
-    //    console.log('get refresh_body: ', refreshbody);
-    //}, [isSuccess])
-
-    ////refreshbody changes with GET request to session info, action fires to log refreshbody
-    //useEffect(() =>
-    //{
-    //    console.log('logging new refreshbody!', refreshbody);
-    //}, [refreshbody])
-
     //fetch session details from backend
     useEffect(() =>
     {
@@ -62,8 +49,6 @@ const ImisToken = (props) =>
                 .then(result => setData(result.value))
                 .then(() => setIsSuccess(true))
                 .catch(err => window.alert('whoops!'.concat(" ", err.message)));
-
-            console.log('logging iMISToken.js props', props);
         }
         catch (Err) {
             console.log('Error while useEffect fired: ', Err.message);
@@ -84,10 +69,6 @@ const ImisToken = (props) =>
                 .then(() => props.history.push('/success'))
                 .catch(err => window.alert('whoops!'.concat(" ", err.message)))
 
-            console.log('access token posted and forwarded to /success', props);
-            console.log('logging iMISToken.js props', props);
-
-
         }
         catch (Err) {
             console.log('Error while running custom query: ', Err.message);
@@ -98,18 +79,14 @@ const ImisToken = (props) =>
     const getQuery = () => {
 
         try {
-            console.log("Logging Bearer " + props.appProps.accTokenStuff.accToken.access_token);
-            //let xhttp = new XMLHttpRequest();
-            //xhttp.open("GET", "https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196", true);
-            //xhttp.setRequestHeader("Authorization", "Bearer " + props.appProps.accTokenStuff.accToken.access_token);
-            //xhttp.setRequestHeader("Content-type", "application/json");
-            //xhttp.send();
             fetch('https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196',
                 {
                     method: 'GET',
                     headers:
                     {
+                        
                         'Authorization': "Bearer ".concat(props.appProps.accTokenStuff.accToken.access_token),
+                        'Content-Type': 'application/json'
                     }
                 })
                 .then(response => response.json)

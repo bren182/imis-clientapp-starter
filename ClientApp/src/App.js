@@ -9,11 +9,6 @@ import Success from './components/Success';
  const App = (props) =>  {
      const [accToken, setAccToken] = useState({ refresh_token: 'acctoken_sample_here_view_me_in_child_components', userName: 'iMISUser@RedirectedToClientApp', access_token: 'sample_access_token_view_me_in_child_components' });
 
-     useEffect(() => 
-     {
-         //console.log('logging props.history: ', props.history);
-         //history.push('/whoooooo');
-     }, [])
 
     return (
         <Layout>

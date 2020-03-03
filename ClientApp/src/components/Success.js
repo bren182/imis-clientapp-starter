@@ -8,14 +8,6 @@ const Success = (props) =>
     const customAuthToken = props.accTokenStuff.access_token;
     document.cookie = props.accTokenStuff.access_token;
 
-    useEffect(() => {
-       // console.log(props.appProps.accTokenStuff);
-       // console.log(props.appProps.accTokenStuff.access_token);
-        console.log('logging iMISToken.js props', props);
-        console.log('logging all cookies in success.js', document.cookie);
-
-    }, [])
-
     return (
         <>
             <h3>Success!</h3>

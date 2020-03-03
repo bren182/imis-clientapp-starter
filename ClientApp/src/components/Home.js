@@ -4,16 +4,7 @@ import ImisToken from './ImisToken';
 
 const Home = (props) => {
 
-    useEffect(() => {
-        console.log('Props for access token passed down from App.js: ', props);
-        console.log('props drilldown on Home.js: ', props.accTokenStuff);
-        console.log('logging history props passed down from App.js to HOME: ', props);
-    }, [])
-
-        
-
-
-    return (
+     return (
         <div className="jumbotron">
             <h1 className="display-4">Hello, world!</h1>
                 <p className="lead">Welcome to your new iMIS client app starter-kit! Built with:</p>
