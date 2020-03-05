@@ -14,7 +14,8 @@ import Success from './components/Success';
         <Layout>
             
             <Route exact path='/' render={() => <Home  accTokenStuff={{...props, accToken, setAccToken }} />} />
-            <Route exact path='/success' render={() => <Success accTokenStuff={accToken} /> } />
+            <Route exact path='/success' render={() => <Success accTokenStuff={accToken} />} />
+            <Route exact path='/token' render={() => <Home accTokenStuff={{ ...props, accToken, setAccToken }} /> } />
       </Layout>
     );
 

@@ -25,9 +25,16 @@ const ImisToken = (props) =>
         refresh_token: '',
 
     })
-    const [data, setData] = useState();
+    const [data, setData] = useState("");
     const [isSuccess, setIsSuccess] = useState();
+    const [testToken, setTestToken] = useState();
+    const [userInfo, setUserInfo] = useState();
+    const [partyId, setPartyId] = useState("");
 
+    useEffect(() =>
+    {
+        console.log('NEW USER INFO: ', userInfo)
+    }, [userInfo])
 
     //useEffect will trigger when GET request is sent from app to fetch session token
     useEffect(() =>
@@ -37,6 +44,13 @@ const ImisToken = (props) =>
             setRefreshBody({ ...refreshbody, refresh_token: data })
         }
     }, [data])
+
+    useEffect(() =>
+    {
+        document.cookie = ("access_token=".concat(testToken));
+
+
+    }, [testToken])
 
 
     //fetch session details from backend
@@ -64,9 +78,9 @@ const ImisToken = (props) =>
                     method: 'POST',
                     body: bodyReq
                 })
-                .then(response =>  response.json())
-                .then(data => props.appProps.accTokenStuff.setAccToken(data))
-                .then(() => props.history.push('/success'))
+                .then(response => response.json())
+                .then(data => { props.appProps.accTokenStuff.setAccToken(data); document.cookie = "access_token=".concat(data.access_token) })
+                //.then(() => props.history.push('/success'))
                 .catch(err => window.alert('whoops!'.concat(" ", err.message)))
 
         }
@@ -76,21 +90,17 @@ const ImisToken = (props) =>
         
     }
 
-    const getQuery = () => {
+    const inputTestTokenChange = (e) => {
+        setTestToken(e.target.value);
+        console.log('set test token,1  behind here', testToken);
+    }
 
+
+    const getQuerySafe = () => {
         try {
-            fetch('https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/api/party/23196',
-                {
-                    method: 'GET',
-                    headers:
-                    {
-                        
-                        'Authorization': "Bearer ".concat(props.appProps.accTokenStuff.accToken.access_token),
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json)
-                .then(data => console.log("woooow, fetch data query logged: ", data))
+            fetch('getparty/'.concat(partyId))
+                .then(response => response.json())
+                .then(data => setUserInfo(data))
                 .catch(err => {
                     console.log('err in imiscollectionqueries ', err);
                 });
@@ -99,6 +109,10 @@ const ImisToken = (props) =>
             console.log(Err.message);
         }
 
+    }
+
+    const changePartyId = (e) => {
+        setPartyId(e.target.value);
     }
 
 
@@ -110,10 +124,13 @@ const ImisToken = (props) =>
             <div className="container">
                 <h3 className="display-5">Let's go!</h3>
                 <button onClick={postRefresh} disabled={!isSuccess} className="btn btn-primary">Continue To 3rd Party App</button>
-                <dt className="col-sm-3">Refresh_Token received from iMIS: </dt>
-                <dd className="col-sm-9">{data}</dd>
-                <button onClick={getQuery} className="btn btn-primary">Click Me to Get User 23196</button>
-
+                <dd className="col-lg-3">Refresh_Token received from iMIS: </dd>
+                <dd className="col-lg-9">{data == "" ? <>No refresh_token here...</> : <>{data}</> }</dd>
+                <dd className="col-lg-3"><p>Test Locally with Access_Token value in below input box</p></dd>
+                <dd className="col-lg-9"><input onChange={inputTestTokenChange} placeholder="Enter `access_token` Here..." /></dd>
+                <dd className="col-lg-9">{props.appProps.accTokenStuff.access_token}</dd>
+                <dd className="col-lg-12"><input id="partyId" onChange={changePartyId} placeholder="Enter PartyId Here..." /></dd>
+                <dd className="col-lg-12"><button onClick={getQuerySafe} className="btn btn-primary">Click Me to Get User {partyId}</button></dd>
 
                 </div>
                 
