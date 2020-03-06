@@ -1,27 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace imisClientAppStarterKit.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TokenController : ControllerBase
+    public class ImisRestController : ControllerBase
     {
-
-
-        public class iMISToken
+        public class ImisToken
         {
             public string grant_type { get; set; }
             public string client_id { get; set; }
@@ -41,10 +32,8 @@ namespace imisClientAppStarterKit.Controllers
 
         ImisPerson myImisPerson = new ImisPerson();
 
-        iMISToken myImisToken = new iMISToken();
-
         //Hosted web API REST Service base url
-        string Baseurl = "https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/";
+        readonly string Baseurl = "https://atkvimistesthk.atkv.co.za/ASI.Scheduler_iMIS0/";
        [HttpGet("/getparty/{partyId}")]
         public async Task<ActionResult<ImisPerson>> GetImisPartyById(string partyId)
         {
@@ -92,14 +81,14 @@ namespace imisClientAppStarterKit.Controllers
         public IActionResult GetImisToken()
         {
             string retToken = HttpContext.Session.GetString("refresh_token");
-            if (myImisToken != null)
+            if (retToken != "")
             {
                 JsonResult myResult = new JsonResult(retToken);
                 return Ok(myResult);
             }
             else
             {
-                return NotFound();
+                return NotFound("OOPS, LOOKS LIKE YOU WEREN'T REDIRECTED FROM iMIS.");
 
             }
         }
@@ -110,7 +99,6 @@ namespace imisClientAppStarterKit.Controllers
         {
             var sessionToken = Request.Form["refresh_token"];
             HttpContext.Session.SetString("refresh_token", sessionToken);
-            //redirect back to home, trying to get request response here causes iMIS server to err 500. 
             return Redirect("/");
         }
         

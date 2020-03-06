@@ -143,7 +143,7 @@ const ImisToken = (props) =>
                     <input id="partyId" onChange={changePartyId} placeholder="Enter PartyId Here..." />                
                 </div>
                 <div className="row">
-                    <button onClick={getQuerySafe} className="btn btn-primary">Click Me to Get User {partyId}</button>
+                    <button onClick={getQuerySafe} className="btn btn-primary">Click Me to Get Party By Id {partyId}</button>
                 </div>
             </div>     
         </>
