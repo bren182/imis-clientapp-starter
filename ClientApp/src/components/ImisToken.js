@@ -54,21 +54,21 @@ const ImisToken = (props) =>
     }, [testToken])
 
 
-    //fetch session details from backend
-    useEffect(() =>
-    {
-        try {
+    ////fetch session details from backend
+    //useEffect(() =>
+    //{
+    //    try {
 
-            fetch('/getimistoken')
-                .then(resp => resp.json())
-                .then(result => setData(result.value))
-                .then(() => setIsSuccess(true))
-                .catch(err => window.alert('whoops!'.concat(" ", err.message)));
-        }
-        catch (Err) {
-            console.log('Error while useEffect fired: ', Err.message);
-        }
-    }, [])
+    //        fetch('/getimistoken')
+    //            .then(resp => resp.json())
+    //            .then(result => setData(result.value))
+    //            .then(() => setIsSuccess(true))
+    //            .catch(err => window.alert('whoops!'.concat(" ", err.message)));
+    //    }
+    //    catch (Err) {
+    //        console.log('Error while useEffect fired: ', Err.message);
+    //    }
+    //}, [])
 
     const postRefresh = ()  =>
     {
@@ -83,7 +83,6 @@ const ImisToken = (props) =>
                 .then(data => { props.appProps.accTokenStuff.setAccToken(data); document.cookie = "access_token=".concat(data.access_token) })
                 //.then(() => props.history.push('/success'))
                 .catch(err => window.alert('whoops!'.concat(" ", err.message)))
-
         }
         catch (Err) {
             console.log('Error while running custom query: ', Err.message);
@@ -95,7 +94,6 @@ const ImisToken = (props) =>
         setTestToken(e.target.value);
         console.log('set test token,1  behind here', testToken);
     }
-
 
     const getQuerySafe = () => {
         try {
@@ -116,27 +114,39 @@ const ImisToken = (props) =>
         setPartyId(e.target.value);
     }
 
-
-
     return (
-        <>
-                    
-                    
+        <>                    
             <div className="container">
-                <h3 className="display-5">Let's go!</h3>
-                <button onClick={postRefresh} disabled={!isSuccess} className="btn btn-primary">Continue To 3rd Party App</button>
-                <dd className="col-lg-3">Refresh_Token received from iMIS: </dd>
-                <dd className="col-lg-9">{data == "" ? <>No refresh_token here...</> : <>{data}</> }</dd>
-                <dd className="col-lg-3"><p>Test Locally with Access_Token value in below input box</p></dd>
-                <dd className="col-lg-9"><input onChange={inputTestTokenChange} placeholder="Enter `access_token` Here..." /></dd>
-                <dd className="col-lg-9">{props.appProps.accTokenStuff.access_token}</dd>
-                <dd className="col-lg-12"><input id="partyId" onChange={changePartyId} placeholder="Enter PartyId Here..." /></dd>
-                <dd className="col-lg-12"><button onClick={getQuerySafe} className="btn btn-primary">Click Me to Get User {partyId}</button></dd>
-
+                <div className="row">
+                    <h3 className="display-5">Let's go!</h3>
+                        <p>iMIS will redirect the user to this page with a refresh_token,
+                           below button will <strong>POST</strong> to token endpoint with
+                           <strong>Refresh_Token</strong> value to get an <strong>Access_Token</strong>.
+                        </p>
                 </div>
-                
-           
+                <div className="row">
+
+                        <p>Refresh_Token received from iMIS: <br />            
+                            {data == "" ? <>No refresh_token here...</> : <>{data}</>}
+                    </p>
+                </div>
+                <div className="row mb-2">
+                        <button onClick={postRefresh} disabled={!isSuccess} className="btn btn-primary">Continue To 3rd Party App</button>
+                </div>
+                <div className="row mb-2">
+                    <p>Test Locally with Access_Token value in below input box</p>            
+                </div>
+                <div className="row my-2">
+                    <input onChange={inputTestTokenChange} placeholder="Enter Acc Token Here..." />
+                </div>
+                <div className="row my-2">
+                    <input id="partyId" onChange={changePartyId} placeholder="Enter PartyId Here..." />                
+                </div>
+                <div className="row">
+                    <button onClick={getQuerySafe} className="btn btn-primary">Click Me to Get User {partyId}</button>
+                </div>
+            </div>     
         </>
-        )
+    )
 }
 export default withRouter(ImisToken);
